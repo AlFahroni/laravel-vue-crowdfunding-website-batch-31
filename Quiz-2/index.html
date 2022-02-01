@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quiz-2</title>
+</head>
+
+<body>
+  <div id="app">
+    <div v-if="!edit">
+      <input type="text" v-model:value="user">
+      <input type="submit" value="Add" @click="addUser">
+    </div>
+    <div v-else>
+      <input type="text" v-model:value="user">
+      <input type="submit" value="Update" @click="updateUser">
+    </div>
+
+    <ul>
+        <li style="line-height: 3;" v-for="(user, index) in users">
+            {{ user.name }}  
+            <button @click="editUser(index, user)">Edit</button> 
+            || <button @click="deleteUser(index)">Delete</button>
+        </li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+        edit: false,
+        selectedIndex: null,
+        user: "",
+        users: [
+            {name: "Muhammad Iqbal Mubarak"},
+            {name: "Ruby Purwanti"},
+            {name: "Faqih Muhammad"},
+        ]
+      },
+      methods: {
+          addUser: function(){
+              this.users.push({'name': this.user});
+              this.user = "";
+          },
+          editUser: function(index, user){
+            this.user = user.name
+            this.selectedIndex = index
+            this.edit = true
+          },
+          updateUser: function(){
+            this.users[this.selectedIndex].name = this.user
+            this.user= ""
+            this.edit = false
+            this.selectedIndex = null
+          },
+          deleteUser: function(index){
+            if (confirm("Anda Yakin?")) {
+              this.$delete(this.users, index);
+            } else {
+              txt = "Data tidak terhapus";
+            }
+          },
+      }
+    })
+  </script>
+</body>
+
+</html>
